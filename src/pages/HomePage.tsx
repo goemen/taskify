@@ -10,6 +10,8 @@ import Typography from "@material-ui/core/Typography";
 import { useTasksCount } from "../hooks";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { shouldOnBoardUser } from "../helpers";
+import { OnBoardingPage } from "./OnBoardingPage";
 
 const useClasses = makeStyles((theme) => ({
   tasks: {
@@ -28,6 +30,11 @@ export const HomePage = () => {
   const numberOfTasks = useTasksCount();
 
   const goToCreateTask = () => history.push("/task");
+  const triggerOnBoard = shouldOnBoardUser();
+
+  if (triggerOnBoard) {
+    return <OnBoardingPage/>
+  }
 
   return (
     <React.Fragment>
