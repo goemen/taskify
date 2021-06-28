@@ -87,9 +87,14 @@ interface IUser {
 
 ## Gallery
 ![alt text](./gallery/onboarding.png "On Boarding Page")
+
 ![alt text](./gallery/home.png "Home Page")
+
 ![alt text](./gallery/home-task-details.png "Task details in a dialog")
+
 ![alt text](./gallery/create-task.png "Create/Add Task Page")
+
 ![alt text](./gallery/task-details.png "Edit/Update Task Page")
+
 ![alt text](./gallery/dnd-tasks.gif "Logo Title Text 1")
 
