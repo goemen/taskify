@@ -13,7 +13,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { ITask } from "../models";
 import { TaskForm } from "./TaskForm";
-import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -43,9 +43,9 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
       <span className={classes.spacer}></span>
       <IconButton
         aria-label="fullscreen"
-        onClick={onFullscreen}
+        href={`/task/${other.id}`}
       >
-        <FullscreenIcon />
+        <OpenInNewIcon />
       </IconButton>
       <IconButton
         aria-label="close"

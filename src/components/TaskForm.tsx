@@ -12,9 +12,7 @@ import {
   Autocomplete,
   AutocompleteRenderInputParams,
 } from "formik-material-ui-lab";
-import {
-  DatePicker,
-} from 'formik-material-ui-pickers';
+import { DatePicker } from "formik-material-ui-pickers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { ListItem } from "@material-ui/core";
@@ -24,7 +22,7 @@ import Avatar from "@material-ui/core/Avatar";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import { Tasks } from "../store/reducers/tasks";
-import moment from 'moment';
+import moment from "moment";
 
 interface ITaskFormProps {
   task: ITask;
@@ -58,11 +56,19 @@ export const TaskForm: React.FC<ITaskFormProps> = ({
         description: Yup.string()
           .required("Desctiption is required")
           .max(500, "Max length is 500"),
+        assignedTo: Yup.object().required("Please assign this task to a user"),
+        status: Yup.string().required("Workflow status is required"),
       })}
       onSubmit={(values) => {
-        
         dispatch(
-          Tasks.add({ ...values, assignedTo: (values.assignedTo as IUser).id, dueDate: typeof values.dueDate === 'string' ? values.dueDate :  moment(values.dueDate).toISOString()})
+          Tasks.add({
+            ...values,
+            assignedTo: (values.assignedTo as IUser).id,
+            dueDate:
+              typeof values.dueDate === "string"
+                ? values.dueDate
+                : moment(values.dueDate).toISOString(),
+          })
         );
         if (navigateAfterSave) {
           history.replace(`/task/${values.id}`);
@@ -101,7 +107,7 @@ export const TaskForm: React.FC<ITaskFormProps> = ({
                 label="Due Date"
                 format="MMM dd yyyy"
                 fullWidth
-                inputVariant='outlined'
+                inputVariant="outlined"
               />
             </Grid>
             <Grid item xs={12}>
