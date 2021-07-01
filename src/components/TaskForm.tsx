@@ -1,3 +1,4 @@
+import * as React from 'react';
 import {
   Button,
   Grid,
@@ -15,14 +16,20 @@ import {
 import { DatePicker } from "formik-material-ui-pickers";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import { ListItem } from "@material-ui/core";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Box from "@material-ui/core/Box";
+import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import * as Yup from "yup";
 import { useHistory } from "react-router-dom";
 import { Tasks } from "../store/reducers/tasks";
 import moment from "moment";
+import Snackbar from '@material-ui/core/Snackbar';
+
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+
+const Alert = (props: AlertProps) => {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 interface ITaskFormProps {
   task: ITask;
@@ -35,6 +42,14 @@ const useClasses = makeStyles((theme) => ({
     justifyContent: "space-between",
     margin: theme.spacing(2),
   },
+  userOption: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  userOptionAvatar: {
+    marginRight: theme.spacing()
+  }
 }));
 
 export const TaskForm: React.FC<ITaskFormProps> = ({
@@ -45,6 +60,9 @@ export const TaskForm: React.FC<ITaskFormProps> = ({
   const users = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [open, setOpen] = React.useState<boolean>(false);
+
+  const handleClose = () => setOpen(false);
 
   return (
     <Formik
@@ -70,9 +88,12 @@ export const TaskForm: React.FC<ITaskFormProps> = ({
                 : moment(values.dueDate).toISOString(),
           })
         );
-        if (navigateAfterSave) {
-          history.replace(`/task/${values.id}`);
-        }
+        setOpen(true);
+        setTimeout(() => {
+          if (navigateAfterSave) {
+            history.replace(`/task/${values.id}`);
+          }
+        }, 1500);
       }}
     >
       {({ touched, errors }) => (
@@ -139,12 +160,10 @@ export const TaskForm: React.FC<ITaskFormProps> = ({
                 getOptionLabel={(option: IUser) => option.name || ""}
                 renderOption={(option: IUser) => {
                   return (
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar src={option.avatar} />
-                      </ListItemAvatar>
-                      <ListItemText primary={option.name} />
-                    </ListItem>
+                    <Box className={classes.userOption}>
+                        <Avatar src={option.avatar} className={classes.userOptionAvatar}/>
+                      <Typography>{option.name}</Typography>
+                    </Box>
                   );
                 }}
                 renderInput={(params: AutocompleteRenderInputParams) => (
@@ -168,6 +187,11 @@ export const TaskForm: React.FC<ITaskFormProps> = ({
               </Button>
             </Grid>
           </Grid>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success">
+          Task successfully saved!!!
+        </Alert>
+      </Snackbar>
         </Form>
       )}
     </Formik>
